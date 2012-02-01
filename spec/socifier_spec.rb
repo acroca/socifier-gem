@@ -78,7 +78,7 @@ describe Socifier do
       Socifier.add_subscribers id: socification_id, emails: emails
     end
     it "calls the API endpoint" do
-      RestClient.should_receive(:post).with("#{Socifier::SOCIFIER_PATH}/api/v1/socifications/test/subscribe_others", {
+      RestClient.should_receive(:put).with("#{Socifier::SOCIFIER_PATH}/api/v1/socifications/test/subscribe_others", {
         emails: ["user1@socifier.com", "user2@socifier.com"]})
       perform_action
     end
