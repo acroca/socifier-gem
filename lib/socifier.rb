@@ -32,5 +32,16 @@ module Socifier
       end
       response_code == 201
     end
+
+    def add_subscribers(params)
+      raise NoApiKeySpecified if self.configuration.api_key.nil?
+      raise InvalidParams if params[:emails].empty? || params[:id].to_s.empty?
+
+      url = "#{Socifier::SOCIFIER_PATH}/api/v1/socifications/#{params[:id]}/subscribe_others"
+      response_code = RestClient.post(url, emails: params[:emails]) do |response, request, result|
+        response.code
+      end
+      response_code == 201
+    end
   end
 end

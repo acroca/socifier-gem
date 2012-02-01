@@ -60,4 +60,51 @@ describe Socifier do
       end
     end
   end
+
+  describe ".add_subscribers" do
+    let(:emails) { ["user1@socifier.com", "user2@socifier.com"] }
+    let(:socification_id) { "test" }
+
+    def perform_action
+      Socifier.add_subscribers id: socification_id, emails: emails
+    end
+    it "calls the API endpoint" do
+      RestClient.should_receive(:post).with("#{Socifier::SOCIFIER_PATH}/api/v1/socifications/test/subscribe_others", {
+        emails: ["user1@socifier.com", "user2@socifier.com"]})
+      perform_action
+    end
+
+    context "without API key" do
+      let(:api_key) { nil }
+      it "raises an exception" do
+        expect { perform_action }.to raise_exception(Socifier::NoApiKeySpecified)
+      end
+    end
+
+    context "without emails" do
+      let(:emails) { [] }
+      it "raises an exception" do
+        expect { perform_action }.to raise_exception(Socifier::InvalidParams)
+      end
+    end
+
+    context "without id" do
+      let(:socification_id) { nil }
+      it "raises an exception" do
+        expect { perform_action }.to raise_exception(Socifier::InvalidParams)
+      end
+    end
+
+    describe "response" do
+      let(:response_code) { 201 }
+      subject { perform_action }
+
+      it { should be_true }
+
+      context "failed request" do
+        let(:response_code) { 404 }
+        it { should be_false }
+      end
+    end
+  end
 end
