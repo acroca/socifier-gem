@@ -41,14 +41,14 @@ the notification open for future e-mails. It doesn't change the status of the no
 
     Socifier.send_mail id: "your-internal-notification-id"
 
-When the event has finished, like when a tv show ends forever, you can close the notification to prevent new users to subscribe it.
+When the event has finished, like when a tv show ends forever, you can `close` the notification to prevent new users to subscribe it.
 It changes the state of the notification to *closed*. It doesn't any e-mail to the users in that case.
 
     Socifier.close id: "your-internal-notification-id"
 
 ### For normal notifications
 
-When a notification is not recurrent you can only close it. In that case, the close action sends the e-mail and closes the
+When a notification is not recurrent you can only close it. In that case, the `close` action sends the e-mail and closes the
 notification at the same time.
 
     Socifier.close id: "your-internal-notification-id"
