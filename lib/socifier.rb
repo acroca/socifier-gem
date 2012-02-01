@@ -21,7 +21,6 @@ module Socifier
       raise InvalidParams if params[:id].empty? || params[:title].empty?
 
       query = {
-        auth_token: self.configuration.api_key,
         title: params[:title],
         id: params[:id],
         is_recurrent: (params[:is_recurrent] ? "1" : "0")
@@ -58,6 +57,7 @@ module Socifier
     private
 
     def send_request(method, url, params)
+      params[:auth_token] = self.configuration.api_key
       RestClient.send(method, url, params) do |response, request, result|
         response.code
       end

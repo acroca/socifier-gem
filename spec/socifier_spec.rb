@@ -79,6 +79,7 @@ describe Socifier do
     end
     it "calls the API endpoint" do
       RestClient.should_receive(:put).with("#{Socifier::SOCIFIER_PATH}/api/v1/socifications/test/subscribe_others", {
+        auth_token: "my_api_key",
         emails: ["user1@socifier.com", "user2@socifier.com"]})
       perform_action
     end
@@ -124,7 +125,8 @@ describe Socifier do
       Socifier.send_mail id: socification_id
     end
     it "calls the API endpoint" do
-      RestClient.should_receive(:put).with("#{Socifier::SOCIFIER_PATH}/api/v1/socifications/test/send_mail", {})
+      RestClient.should_receive(:put).with("#{Socifier::SOCIFIER_PATH}/api/v1/socifications/test/send_mail", {
+        auth_token: "my_api_key",})
       perform_action
     end
 
@@ -162,7 +164,8 @@ describe Socifier do
       Socifier.close id: socification_id
     end
     it "calls the API endpoint" do
-      RestClient.should_receive(:put).with("#{Socifier::SOCIFIER_PATH}/api/v1/socifications/test/close", {})
+      RestClient.should_receive(:put).with("#{Socifier::SOCIFIER_PATH}/api/v1/socifications/test/close", {
+        auth_token: "my_api_key",})
       perform_action
     end
 
