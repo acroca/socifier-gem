@@ -47,6 +47,14 @@ module Socifier
       send_request(:put, url, {}) == 202
     end
 
+    def close(params)
+      require_api_key!
+      raise InvalidParams if params[:id].to_s.empty?
+
+      url = "#{Socifier::SOCIFIER_PATH}/api/v1/socifications/#{params[:id]}/close"
+      send_request(:put, url, {}) == 202
+    end
+
     private
 
     def send_request(method, url, params)

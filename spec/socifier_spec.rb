@@ -116,6 +116,7 @@ describe Socifier do
       end
     end
   end
+
   describe ".send_mail" do
     let(:socification_id) { "test" }
 
@@ -124,6 +125,44 @@ describe Socifier do
     end
     it "calls the API endpoint" do
       RestClient.should_receive(:put).with("#{Socifier::SOCIFIER_PATH}/api/v1/socifications/test/send_mail", {})
+      perform_action
+    end
+
+    context "without API key" do
+      let(:api_key) { nil }
+      it "raises an exception" do
+        expect { perform_action }.to raise_exception(Socifier::NoApiKeySpecified)
+      end
+    end
+
+    context "without id" do
+      let(:socification_id) { nil }
+      it "raises an exception" do
+        expect { perform_action }.to raise_exception(Socifier::InvalidParams)
+      end
+    end
+
+    describe "response" do
+      let(:response_code) { 202 }
+      subject { perform_action }
+
+      it { should be_true }
+
+      context "failed request" do
+        let(:response_code) { 404 }
+        it { should be_false }
+      end
+    end
+  end
+
+  describe ".close" do
+    let(:socification_id) { "test" }
+
+    def perform_action
+      Socifier.close id: socification_id
+    end
+    it "calls the API endpoint" do
+      RestClient.should_receive(:put).with("#{Socifier::SOCIFIER_PATH}/api/v1/socifications/test/close", {})
       perform_action
     end
 
