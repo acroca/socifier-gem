@@ -15,7 +15,11 @@ To get an API key, for now you will have to send an e-mail to [albert@acroca.com
 Create a notification
 ---------------------
 
-    Socifier.new_socification id: "your-internal-notification-id", name: "The title for the new notification", is_recurrent: true
+    Socifier.new_socification({
+      id: "your-internal-notification-id", 
+      name: "The title for the new notification", 
+      is_recurrent: true
+    })
 
 The `id` is the unique ID for you to perform future actions on the new notification. It's not displayed anywhere.
 
@@ -27,7 +31,10 @@ or only one e-mail (like when some product is released)
 Subscribe your users to a notification
 --------------------------------------
 
-    Socifier.add_subscribers id: "your-internal-notification-id", emails: ["user_1@example.com", "user_2@example.com"]
+    Socifier.add_subscribers({
+      id: "your-internal-notification-id", 
+      emails: ["user_1@example.com", "user_2@example.com"]
+    })
 
 Send the e-mails to the users
 -----------------------------
