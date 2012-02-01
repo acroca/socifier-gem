@@ -18,40 +18,49 @@ describe Socifier do
   end
 
   describe ".new_socification" do
+    let(:title) { "Test Socification" }
+    let(:socification_id) { "socification_1" }
+
+    def perform_action
+      Socifier.new_socification id: socification_id, title: title, is_recurrent: true
+    end
+
     it "calls the API endpoint" do
       RestClient.should_receive(:post).with("#{Socifier::SOCIFIER_PATH}/api/v1/socifications", {
         auth_token: "my_api_key",
-        title: "Test socification",
-        id: "test",
+        title: "Test Socification",
+        id: "socification_1",
         is_recurrent: "1"})
-      Socifier.new_socification id: "test", title: "Test socification", is_recurrent: true
+      perform_action
     end
 
     context "without API key" do
       let(:api_key) { nil }
       it "raises an exception" do
-        expect {
-          Socifier.new_socification id: "test", title: "Test socification", is_recurrent: true
-        }.to raise_exception(Socifier::NoApiKeySpecified)
+        expect { perform_action }.to raise_exception(Socifier::NoApiKeySpecified)
       end
     end
 
-    context "invalid params" do
-      it "requires title" do
+    context "empty title" do
+      let(:title) { "" }
+      it "throws an exception" do
         expect {
-          Socifier.new_socification id: "test", title: "", is_recurrent: true
+          perform_action
         }.to raise_exception(Socifier::InvalidParams)
       end
-      it "requires id" do
+    end
+    context "empty id" do
+      let(:socification_id) { "" }
+      it "throws an exception" do
         expect {
-          Socifier.new_socification id: "", title: "Test socification", is_recurrent: true
+          perform_action
         }.to raise_exception(Socifier::InvalidParams)
       end
     end
 
     describe "response" do
       let(:response_code) { 201 }
-      subject { Socifier.new_socification(id: "test", title: "Test socification", is_recurrent: true) }
+      subject { perform_action }
       it { should be_true }
 
       context "failed request" do
