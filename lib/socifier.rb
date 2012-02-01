@@ -39,6 +39,14 @@ module Socifier
       send_request(:put, url, query) == 201
     end
 
+    def send_mail(params)
+      require_api_key!
+      raise InvalidParams if params[:id].to_s.empty?
+
+      url = "#{Socifier::SOCIFIER_PATH}/api/v1/socifications/#{params[:id]}/send_mail"
+      send_request(:put, url, {}) == 202
+    end
+
     private
 
     def send_request(method, url, params)
@@ -46,6 +54,7 @@ module Socifier
         response.code
       end
     end
+
     def require_api_key!
       raise NoApiKeySpecified if self.configuration.api_key.nil?
     end
