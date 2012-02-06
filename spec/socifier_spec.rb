@@ -17,12 +17,12 @@ describe Socifier do
     end
   end
 
-  describe ".new_socification" do
+  describe ".create_socification" do
     let(:title) { "Test Socification" }
     let(:socification_id) { "socification_1" }
 
     def perform_action
-      Socifier.new_socification id: socification_id, title: title, is_recurrent: true
+      Socifier.create_socification id: socification_id, title: title, recurrent: true
     end
 
     it "calls the API endpoint" do

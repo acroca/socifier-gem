@@ -16,14 +16,14 @@ module Socifier
       block.call self.configuration
     end
 
-    def new_socification(params)
+    def create_socification(params)
       require_api_key!
       raise InvalidParams if params[:id].empty? || params[:title].empty?
 
       query = {
         title: params[:title],
         id: params[:id],
-        is_recurrent: (params[:is_recurrent] ? "1" : "0")
+        is_recurrent: (params[:recurrent] ? "1" : "0")
       }
       url = "#{Socifier::SOCIFIER_PATH}/api/v1/socifications"
       send_request(:post, url, query) == 201
